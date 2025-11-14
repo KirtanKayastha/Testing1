@@ -1,0 +1,47 @@
+.failure-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* center vertically */
+  background-color: #fff5f5; /* light red/pink background */
+  padding: 2rem;
+}
+
+.failure-box {
+  background-color: white;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+}
+
+.failure-box h2 {
+  font-size: 1.8rem;
+  color: #e74c3c; /* red */
+  margin-bottom: 1rem;
+}
+
+.failure-box p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.failure-box .proceed-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background-color: #1985d0;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.failure-box .proceed-btn:hover {
+  background-color: #0f5c99;
+}

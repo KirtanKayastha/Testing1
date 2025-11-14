@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  min-height: 100%;
+  overflow-x: hidden; /* prevent horizontal scroll globally */
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* make container full viewport height */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.content {
+  flex: 1; /* take remaining space so footer stays at bottom */
+  padding: 80px 20px 60px; /* space for header/footer */
+  text-align: center;
+}

@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.header {
+  background: linear-gradient(#277995 50%, #8cbdd2 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  box-sizing: border-box;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(182, 149, 149, 0.15);
+  backdrop-filter: blur(10px);
+  font-family: 'Inter', sans-serif;
+}
+
+.left-section .logo {
+  height: 45px;
+  transition: transform 0.3s ease;
+}
+
+.left-section .logo:hover {
+  transform: scale(1.05);
+}
+
+.left-section .header-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.left-section .header-link:hover {
+  opacity: 0.9;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 24px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.middle-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 30px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 550px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #666;
+  pointer-events: none;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border-radius: 25px;
+  border: none;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-bar:focus {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.search-bar::placeholder {
+  color: #999;
+}
+
+.right-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.header-item {
+  display: flex;
+  align-items: center;
+  background: white;
+  color: black;
+  padding: 10px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  white-space: nowrap;
+}
+
+.header-item:hover {
+  background-color: #cbebf5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-item .icon {
+  width: 20px;
+  height: 20px;
+  filter: none;
+  flex-shrink: 0;
+}
+
+.header-item:active {
+  transform: translateY(0);
+}
+
+.user-greeting .icon {
+  filter: none;
+}
+
+.user-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  color: black;
+  background-color: white;
+}
+
+.logout-btn:hover {
+  background-color: #cbebf5;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: black;
+  border-radius: 11px;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 81, 47, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .header {
+    padding: 10px 20px;
+    height: 65px;
+  }
+  
+  .middle-section {
+    padding: 0 20px;
+  }
+  
+  .search-wrapper {
+    max-width: 400px;
+  }
+  
+  .right-section {
+    gap: 8px;
+  }
+  
+  .header-item {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  
+  .logo-text {
+    font-size: 20px;
+  }
+}
+
+/* Mobile Responsive - Large phones */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: nowrap;
+    height: 60px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  
+  .left-section {
+    order: 1;
+    flex-shrink: 0;
+  }
+  
+  .middle-section {
+    order: 2;
+    flex: 1;
+    padding: 0 8px;
+  }
+  
+  .right-section {
+    order: 3;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  
+  .logo-text {
+    font-size: 16px;
+  }
+  
+  .search-bar {
+    padding: 8px 10px 8px 35px;
+    font-size: 13px;
+  }
+  
+  .search-icon {
+    width: 16px;
+    height: 16px;
+    left: 10px;
+  }
+  
+  .header-item {
+    padding: 7px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  
+  .header-item span:not(.user-name):not(.cart-badge) {
+    display: none;
+  }
+  
+  .user-name {
+    display: inline;
+    max-width: 60px;
+    font-size: 10px;
+  }
+  
+  .header-item .icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .cart-badge {
+    top: -6px;
+    right: -6px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+}
+
+/* Mobile Responsive - Small phones (iPhone SE, etc) */
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 10px;
+    height: 55px;
+    gap: 6px;
+  }
+  
+  .logo-text {
+    font-size: 14px;
+  }
+  
+  .middle-section {
+    padding: 0 6px;
+  }
+  
+  .header-item span:not(.user-name):not(.cart-badge) {
+    display: none;
+  }
+  
+  .user-name {
+    display: inline;
+    max-width: 50px;
+    font-size: 9px;
+  }
+  
+  .header-item {
+    padding: 6px 8px;
+    min-width: 32px;
+    justify-content: center;
+  }
+  
+  .header-item .icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .right-section {
+    gap: 4px;
+  }
+  
+  .search-wrapper {
+    max-width: 100%;
+  }
+  
+  .search-bar {
+    padding: 7px 8px 7px 30px;
+    font-size: 12px;
+    border-radius: 20px;
+  }
+  
+  .search-icon {
+    width: 14px;
+    height: 14px;
+    left: 8px;
+  }
+  
+  .cart-badge {
+    top: -5px;
+    right: -5px;
+    min-width: 14px;
+    height: 14px;
+    font-size: 8px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .header {
+    padding: 6px 8px;
+    height: 50px;
+    gap: 4px;
+  }
+  
+  .logo-text {
+    font-size: 12px;
+  }
+  
+  .middle-section {
+    padding: 0 4px;
+  }
+  
+  .header-item {
+    padding: 5px 6px;
+    min-width: 28px;
+  }
+  
+  .header-item .icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .right-section {
+    gap: 3px;
+  }
+  
+  .search-bar {
+    padding: 6px 6px 6px 26px;
+    font-size: 11px;
+  }
+  
+  .search-icon {
+    width: 12px;
+    height: 12px;
+    left: 6px;
+  }
+  
+  .user-name {
+    max-width: 40px;
+    font-size: 8px;
+  }
+  
+  .cart-badge {
+    top: -4px;
+    right: -4px;
+    min-width: 12px;
+    height: 12px;
+    font-size: 7px;
+    padding: 0 4px;
+  }
+}
