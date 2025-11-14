@@ -1,0 +1,56 @@
+[USER / FRONTEND SPA] 
+      |
+      | 1. Visit Signup/Login Page
+      |------------------------------>
+      |
+      | 2. Submit Signup/Login Form
+      |   POST /signup or /login
+      |
+[BACKEND API SERVER] 
+      |
+      | 3. Validate credentials / create account
+      |  -> If valid, create JWT token (user info + expiry)
+      |  -> Send JWT back to frontend
+      |
+[USER / FRONTEND SPA] 
+      |
+      | 4. Store JWT in localStorage or memory
+      |  -> User is now "authenticated"
+      |
+      | 5. Access protected routes (Cart, Orders)
+      |  GET /cart, GET /orders
+      |  Include JWT in Authorization header
+      |
+[BACKEND API SERVER] 
+      |
+      | 6. Middleware verifies JWT token
+      |  -> Decode user info (user ID)
+      |  -> Fetch cart or order data from DB using user ID
+      |  -> Send data back to frontend
+      |
+[USER / FRONTEND SPA] 
+      |
+      | 7. Display cart / order data
+      |  User clicks "Checkout" → Initiate payment
+      |
+      | 8. Call Payment Gateway Widget (Khalti)
+      |  -> Widget generates payment token
+      |
+[BACKEND API SERVER] 
+      |
+      | 9. Receive payment token + amount
+      |  -> Backend calls Khalti API with **API Key**
+      |  -> Verify payment status
+      |  -> Update order status in DB
+      |
+[DATABASE (MySQL)] 
+      |
+      | 10. Orders table updated with payment status
+      |
+[USER / FRONTEND SPA] 
+      |
+      | 11. Receive confirmation from backend
+      |  -> Display "Order Successful" page
+      |
+      V
+[END]
