@@ -1,10 +1,13 @@
-// src/pages/CartPage.jsx
+// src/Pages/CartPage.jsx
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContext } from "../context/ToastContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./CartPage.css";
+
+// Use environment variable for backend URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 export function CartPage() {
   const { cart, user, removeFromCart } = useContext(AuthContext);
@@ -54,7 +57,7 @@ export function CartPage() {
                 <img
                   src={
                     product.image
-                      ? `http://localhost:5000${product.image}`
+                      ? `${API_URL}${product.image}`
                       : "https://via.placeholder.com/100"
                   }
                   alt={product.name}
