@@ -1,8 +1,12 @@
+// src/Components/ProductCard.jsx
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContext } from "../context/ToastContext";
 import "./ProductCard.css";
+
+// Backend API URL from env
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const ProductCard = ({ product, cart }) => {
   const navigate = useNavigate();
@@ -10,10 +14,10 @@ export const ProductCard = ({ product, cart }) => {
   const { showToast } = useContext(ToastContext);
 
   const imageSrc = product.image
-    ? `http://localhost:5000${product.image}`
+    ? `${API_URL}${product.image}`
     : "https://via.placeholder.com/150";
 
-  const inCart = cart.some((item) => item.productId === product.id); // check cart
+  const inCart = cart.some((item) => item.productId === product.id);
 
   const handleAddToCart = async () => {
     if (!user) {
@@ -53,4 +57,4 @@ export const ProductCard = ({ product, cart }) => {
       </div>
     </div>
   );
-}
+};
