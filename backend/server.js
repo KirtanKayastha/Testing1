@@ -31,7 +31,10 @@ app.get("/", (req, res) => {
 // Products route
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Products query error:", err);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(results);
   });
 });
@@ -39,7 +42,10 @@ app.get("/products", (req, res) => {
 // Users route
 app.get("/users", (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Users query error:", err);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(results);
   });
 });
@@ -47,7 +53,10 @@ app.get("/users", (req, res) => {
 // Orders route
 app.get("/orders", (req, res) => {
   db.query("SELECT * FROM orders", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Orders query error:", err);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(results);
   });
 });
@@ -55,15 +64,22 @@ app.get("/orders", (req, res) => {
 // Cart route
 app.get("/cart", (req, res) => {
   db.query("SELECT * FROM cart", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Cart query error:", err);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(results);
   });
 });
 
-// Payments route
+// Payments route (debug-safe)
 app.get("/payments", (req, res) => {
   db.query("SELECT * FROM payments", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Payments query error:", err); // Logs error in Render logs
+      return res.status(500).json({ error: err.message });
+    }
+    console.log("Payments results:", results); // Logs fetched data
     res.json(results);
   });
 });
