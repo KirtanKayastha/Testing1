@@ -10,15 +10,15 @@ const app = express();
 app.use(express.json());
 
 // =======================
-// Configure CORS
+// CORS CONFIG
 // =======================
 const allowedOrigins = [
-  "https://testing1-git-main-kirtan-kayasthas-projects.vercel.app" // your deployed frontend
+  "https://testing1-3n4b7td9j-kirtan-kayasthas-projects.vercel.app"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow requests with no origin
+    if (!origin) return callback(null, true); // allow curl, mobile apps
     if (!allowedOrigins.includes(origin)) {
       const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
       return callback(new Error(msg), false);
@@ -29,7 +29,7 @@ app.use(cors({
 }));
 
 // =======================
-// Connect to MySQL
+// DATABASE CONNECTION
 // =======================
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
@@ -41,11 +41,11 @@ const db = mysql.createPool({
 
 db.getConnection((err) => {
   if (err) console.error("DB connection error:", err);
-  else console.log("Connected to Railway MySQL!");
+  else console.log("Connected to MySQL!");
 });
 
 // =======================
-// Routes
+// ROUTES
 // =======================
 
 // Root
@@ -94,7 +94,7 @@ app.get("/payments", (req, res) => {
 });
 
 // =======================
-// Start server
+// START SERVER
 // =======================
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
