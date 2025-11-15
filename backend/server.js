@@ -19,13 +19,45 @@ const db = mysql.createPool({
 });
 
 db.getConnection((err) => {
-  if(err) console.error("DB connection error:", err);
+  if (err) console.error("DB connection error:", err);
   else console.log("Connected to Railway MySQL!");
 });
 
-// Example route
+// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running!");
+});
+
+// Products route
+app.get("/products", (req, res) => {
+  db.query("SELECT * FROM products", (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+// Users route
+app.get("/users", (req, res) => {
+  db.query("SELECT * FROM users", (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+// Orders route
+app.get("/orders", (req, res) => {
+  db.query("SELECT * FROM orders", (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+// Cart route
+app.get("/cart", (req, res) => {
+  db.query("SELECT * FROM cart", (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
 });
 
 // Start server
