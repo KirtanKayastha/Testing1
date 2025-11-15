@@ -1,7 +1,11 @@
+// src/pages/LoginPage.jsx
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "./LoginPage.css";
+
+// Backend API URL from env
+const API_URL = import.meta.env.VITE_API_URL;
 
 export function LoginPage() {
   const { setUser, setToken } = useContext(AuthContext);
@@ -94,8 +98,8 @@ export function LoginPage() {
 
     try {
       const url = isSignup
-        ? "http://localhost:5000/api/users/signup"
-        : "http://localhost:5000/api/users/login";
+        ? `${API_URL}/api/users/signup`
+        : `${API_URL}/api/users/login`;
 
       const body = isSignup
         ? { name: signupName, email: signupEmail, password: signupPassword }
