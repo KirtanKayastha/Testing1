@@ -9,28 +9,28 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// =======================
-// CORS CONFIG
-// =======================
+// CORS configuration: allow all Vercel deployments and local testing
 const allowedOrigins = [
-  "https://testing1-3n4b7td9j-kirtan-kayasthas-projects.vercel.app"
+  /\.vercel\.app$/,  // any Vercel deployment
+  "http://localhost:5173" // for local frontend testing (Vite default port)
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow curl, mobile apps
-    if (!allowedOrigins.includes(origin)) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
-      return callback(new Error(msg), false);
+    if (!origin) return callback(null, true); // allow curl, Postman
+    if (allowedOrigins.some(pattern => 
+        (typeof pattern === "string" && pattern === origin) ||
+        (pattern instanceof RegExp && pattern.test(origin))
+      )) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+    return callback(new Error(msg), false);
   },
   credentials: true
 }));
 
-// =======================
-// DATABASE CONNECTION
-// =======================
+// Connect to MySQL
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -44,16 +44,12 @@ db.getConnection((err) => {
   else console.log("Connected to MySQL!");
 });
 
-// =======================
-// ROUTES
-// =======================
-
-// Root
+// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// Products
+// Products route
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -61,7 +57,7 @@ app.get("/products", (req, res) => {
   });
 });
 
-// Users
+// Users route
 app.get("/users", (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -69,7 +65,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-// Orders
+// Orders route
 app.get("/orders", (req, res) => {
   db.query("SELECT * FROM orders", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -77,7 +73,7 @@ app.get("/orders", (req, res) => {
   });
 });
 
-// Cart
+// Cart route
 app.get("/cart", (req, res) => {
   db.query("SELECT * FROM cart", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -85,7 +81,7 @@ app.get("/cart", (req, res) => {
   });
 });
 
-// Payments
+// Payments route
 app.get("/payments", (req, res) => {
   db.query("SELECT * FROM payments", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -93,8 +89,6 @@ app.get("/payments", (req, res) => {
   });
 });
 
-// =======================
-// START SERVER
-// =======================
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
