@@ -1,3 +1,4 @@
+// src/Components/ProductList.jsx
 import { useEffect, useState, useContext } from "react";
 import { ProductCard } from "./ProductCard";
 import { AuthContext } from "../context/AuthContext";
