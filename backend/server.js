@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import dotenv from "dotenv";
 import mysql from "mysql2";
@@ -8,16 +9,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+// =======================
 // Configure CORS
+// =======================
 const allowedOrigins = [
-  "https://testing1-a8r06d0ii-kirtan-kayasthas-projects.vercel.app"
+  "https://testing1-git-main-kirtan-kayasthas-projects.vercel.app" // your deployed frontend
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
+    if (!origin) return callback(null, true); // allow requests with no origin
+    if (!allowedOrigins.includes(origin)) {
       const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
       return callback(new Error(msg), false);
     }
@@ -26,7 +28,9 @@ app.use(cors({
   credentials: true
 }));
 
-// Connect to Railway MySQL
+// =======================
+// Connect to MySQL
+// =======================
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -40,12 +44,16 @@ db.getConnection((err) => {
   else console.log("Connected to Railway MySQL!");
 });
 
-// Root route
+// =======================
+// Routes
+// =======================
+
+// Root
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// Products route
+// Products
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -53,7 +61,7 @@ app.get("/products", (req, res) => {
   });
 });
 
-// Users route
+// Users
 app.get("/users", (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -61,7 +69,7 @@ app.get("/users", (req, res) => {
   });
 });
 
-// Orders route
+// Orders
 app.get("/orders", (req, res) => {
   db.query("SELECT * FROM orders", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -69,7 +77,7 @@ app.get("/orders", (req, res) => {
   });
 });
 
-// Cart route
+// Cart
 app.get("/cart", (req, res) => {
   db.query("SELECT * FROM cart", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -77,7 +85,7 @@ app.get("/cart", (req, res) => {
   });
 });
 
-// Payments route
+// Payments
 app.get("/payments", (req, res) => {
   db.query("SELECT * FROM payments", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -85,6 +93,8 @@ app.get("/payments", (req, res) => {
   });
 });
 
+// =======================
 // Start server
+// =======================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
