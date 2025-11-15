@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import dotenv from "dotenv";
 import mysql from "mysql2";
@@ -9,15 +8,15 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// CORS configuration: allow all Vercel deployments and local testing
+// CORS configuration: allow all Vercel deployments and local frontend
 const allowedOrigins = [
-  /\.vercel\.app$/,  // any Vercel deployment
-  "http://localhost:5173" // for local frontend testing (Vite default port)
+  /https?:\/\/.*\.vercel\.app$/, // any Vercel frontend
+  "http://localhost:5173"         // local frontend
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow curl, Postman
+    if (!origin) return callback(null, true); // allow Postman, curl
     if (allowedOrigins.some(pattern => 
         (typeof pattern === "string" && pattern === origin) ||
         (pattern instanceof RegExp && pattern.test(origin))
@@ -30,7 +29,7 @@ app.use(cors({
   credentials: true
 }));
 
-// Connect to MySQL
+// Connect to MySQL (Railway)
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -41,7 +40,7 @@ const db = mysql.createPool({
 
 db.getConnection((err) => {
   if (err) console.error("DB connection error:", err);
-  else console.log("Connected to MySQL!");
+  else console.log("Connected to Railway MySQL!");
 });
 
 // Root route
@@ -90,5 +89,5 @@ app.get("/payments", (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
