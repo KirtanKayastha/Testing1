@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import dotenv from "dotenv";
 import mysql from "mysql2";
@@ -8,28 +9,27 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// CORS configuration: allow all Vercel deployments and local frontend
+// Allowed origins (update if Vercel redeploy changes)
 const allowedOrigins = [
-  /https?:\/\/.*\.vercel\.app$/, // any Vercel frontend
-  "http://localhost:5173"         // local frontend
+  "https://testing1-a8r06d0ii-kirtan-kayasthas-projects.vercel.app",
+  "https://testing1-git-main-kirtan-kayasthas-projects.vercel.app",
+  "https://testing1-3n4b7td9j-kirtan-kayasthas-projects.vercel.app",
+  "https://testing1-ps1joh9if-kirtan-kayasthas-projects.vercel.app"
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman, curl
-    if (allowedOrigins.some(pattern => 
-        (typeof pattern === "string" && pattern === origin) ||
-        (pattern instanceof RegExp && pattern.test(origin))
-      )) {
-      return callback(null, true);
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow server-to-server or curl requests
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `CORS policy does not allow access from the specified origin.`;
+      return callback(new Error(msg), false);
     }
-    const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
-    return callback(new Error(msg), false);
+    return callback(null, true);
   },
   credentials: true
 }));
 
-// Connect to MySQL (Railway)
+// Connect to MySQL (Railway or Render DB)
 const db = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -40,7 +40,7 @@ const db = mysql.createPool({
 
 db.getConnection((err) => {
   if (err) console.error("DB connection error:", err);
-  else console.log("Connected to Railway MySQL!");
+  else console.log("Connected to MySQL!");
 });
 
 // Root route
@@ -89,5 +89,5 @@ app.get("/payments", (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
