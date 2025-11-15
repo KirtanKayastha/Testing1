@@ -3,6 +3,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mysql from "mysql2";
 import cors from "cors";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -48,7 +50,62 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// Products route
+// ===== SIGNUP ROUTE =====
+app.post("/api/users/signup", (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // Check if user already exists
+  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+    if (results.length > 0) return res.status(400).json({ message: "User already exists" });
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert new user
+    db.query(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashedPassword],
+      (err, result) => {
+        if (err) return res.status(500).json({ message: err.message });
+
+        const user = { id: result.insertId, name, email };
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+        res.json({ user, token });
+      }
+    );
+  });
+});
+
+// ===== LOGIN ROUTE =====
+app.post("/api/users/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
+  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+    if (results.length === 0) return res.status(400).json({ message: "User not found" });
+
+    const user = results[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.json({ user: { id: user.id, name: user.name, email: user.email }, token });
+  });
+});
+
+// ===== PRODUCTS ROUTES =====
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -56,7 +113,7 @@ app.get("/products", (req, res) => {
   });
 });
 
-// Users route
+// Other GET routes: users, orders, cart, payments
 app.get("/users", (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -64,7 +121,6 @@ app.get("/users", (req, res) => {
   });
 });
 
-// Orders route
 app.get("/orders", (req, res) => {
   db.query("SELECT * FROM orders", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -72,7 +128,6 @@ app.get("/orders", (req, res) => {
   });
 });
 
-// Cart route
 app.get("/cart", (req, res) => {
   db.query("SELECT * FROM cart", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -80,7 +135,6 @@ app.get("/cart", (req, res) => {
   });
 });
 
-// Payments route
 app.get("/payments", (req, res) => {
   db.query("SELECT * FROM payments", (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
