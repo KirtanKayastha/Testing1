@@ -4,6 +4,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./OrdersPage.css";
 
+// Use the environment variable for backend URL
+const API_URL = import.meta.env.VITE_API_URL;
+
 export function OrdersPage() {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
@@ -14,7 +17,7 @@ export function OrdersPage() {
 
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/orders/${user.id}`);
+        const res = await axios.get(`${API_URL}/api/orders/${user.id}`);
         setOrders(res.data);
       } catch (err) {
         console.error("Failed to fetch orders:", err);
@@ -98,7 +101,7 @@ export function OrdersPage() {
               <div className="order-body">
                 <div className="order-image-wrapper">
                   <img
-                    src={order.image ? `http://localhost:5000${order.image}` : "https://via.placeholder.com/100"}
+                    src={order.image ? `${API_URL}${order.image}` : "https://via.placeholder.com/100"}
                     alt={order.name}
                     className="order-image"
                   />
