@@ -1,7 +1,8 @@
+// src/Components/Header.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import "./header.css";
+import "./Header.css"; // <-- case-sensitive fix
 
 import userIcon from "../assets/user-icon.png";
 import ordersIcon from "../assets/orders-icon.png";
@@ -57,7 +58,7 @@ export function Header({ searchTerm, setSearchTerm }) {
         ) : (
           <Link className="header-item login-btn" to="/login">
             <img src={userIcon} className="icon" alt="Login" />
-             <span>Login</span>
+            <span>Login</span>
           </Link>
         )}
 
