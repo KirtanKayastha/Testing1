@@ -60,6 +60,14 @@ app.get("/cart", (req, res) => {
   });
 });
 
+// Payments route
+app.get("/payments", (req, res) => {
+  db.query("SELECT * FROM payments", (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
